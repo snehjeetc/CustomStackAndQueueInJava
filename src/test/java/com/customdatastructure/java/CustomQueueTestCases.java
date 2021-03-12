@@ -15,4 +15,14 @@ public class CustomQueueTestCases {
         myQueue.enqueue(firstNumber);
         Assert.assertEquals(thirdNumber, myQueue.peek());
     }
+
+    @Test
+    public void givenNumbers_CreateAQueue_ShouldRemoveTheFirstElementInTheQueue(){
+        CustomQueue<Integer> myQueue = new CustomQueue<Integer>();
+        for(int i=1; i<=5; i++)
+            myQueue.enqueue(Integer.valueOf(i));
+        System.out.println("First Item: " + myQueue.peek());
+        myQueue.dequeue();
+        Assert.assertEquals(Integer.valueOf(2), myQueue.peek());
+    }
 }

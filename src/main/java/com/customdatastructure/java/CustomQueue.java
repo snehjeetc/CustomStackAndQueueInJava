@@ -15,4 +15,15 @@ public class CustomQueue<T> {
         return list.getHead().getValue();
     }
 
+    public void dequeue() {
+        list.pop();
+    }
+
+    public boolean isEmpty(){
+        return list.size()==0;
+    }
+
+    public int size(){
+        return list.size();
+    }
 }
