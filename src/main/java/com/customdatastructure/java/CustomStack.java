@@ -12,7 +12,21 @@ public class CustomStack<T> {
     }
 
     public T peek(){
+        if(isEmpty())
+            throw new CustomLinkedListExceptions(CustomLinkedListExceptions.LinkedListExceptionType.LIST_EMPTY,
+                    "Stack Empty");
         return list.getHead().getValue();
     }
 
+    public void pop(){
+        list.pop();
+    }
+
+    public boolean isEmpty(){
+        return list.size()==0;
+    }
+
+    public int size(){
+        return list.size();
+    }
 }
