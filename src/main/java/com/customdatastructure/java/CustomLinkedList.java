@@ -8,7 +8,7 @@ public class CustomLinkedList<T> {
     private Node<T> tail;
     private Integer size;
 
-    CustomLinkedList(T ...value ){
+    public CustomLinkedList(T ...value ){
         if(value == null || value.length == 0 || value[0]==null) {
             this.head = null;
             this.tail = null;
