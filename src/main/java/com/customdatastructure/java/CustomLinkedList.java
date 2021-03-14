@@ -4,8 +4,8 @@ import java.util.Comparator;
 
 @SuppressWarnings("unchecked")
 public class CustomLinkedList<T> {
-    private Node<T> head;
-    private Node<T> tail;
+    private INode<T> head;
+    private INode<T> tail;
     private Integer size;
 
     public CustomLinkedList(T ...value ){
@@ -41,6 +41,7 @@ public class CustomLinkedList<T> {
         if(this.head == null) {
             this.head = newNode;
             this.tail = newNode;
+            this.size++;
             return;
         }
         else {
@@ -55,9 +56,9 @@ public class CustomLinkedList<T> {
             return -1;
         }
         int index = 0;
-        Node<T> temp = this.head;
+        INode<T> temp = this.head;
         while(temp != null) {
-            if(temp.getValue().equals(value))
+            if(temp.getKey().equals(value))
                 return index;
             index++;
             temp = temp.getNext();
@@ -67,8 +68,8 @@ public class CustomLinkedList<T> {
 
     public void insert(int atIndex, T value) {
         if(this.head == null && atIndex!=0) {
-            throw new CustomLinkedListExceptions(CustomLinkedListExceptions.LinkedListExceptionType.INDEX_OUT_OF_BOUND,
-                    "Invalid index for insertion");
+           throw new CustomLinkedListExceptions(CustomLinkedListExceptions.LinkedListExceptionType.INDEX_OUT_OF_BOUND,
+                   "Invalid index for insertion");
         }
         Node<T> newNode = new Node<T>(value);
         if(atIndex == 0) {
@@ -82,7 +83,7 @@ public class CustomLinkedList<T> {
             return;
         }
         int count = 0;
-        Node<T> temp = this.head;
+        INode<T> temp = this.head;
         while(temp.getNext()!=null && count < atIndex-1) {
             temp = temp.getNext();
             count++;
@@ -111,7 +112,7 @@ public class CustomLinkedList<T> {
             if(this.head == this.tail)
                 this.tail = this.head = null;
             else {
-                Node<T> temp = this.head;
+                INode<T> temp = this.head;
                 this.head = this.head.getNext();
                 temp.setNext(null);
             }
@@ -128,7 +129,7 @@ public class CustomLinkedList<T> {
             return;
         }
 
-        Node<T> prevTail = this.head;
+        INode<T> prevTail = this.head;
         while(prevTail.getNext() != this.tail)
             prevTail = prevTail.getNext();
         prevTail.setNext(null);
@@ -150,14 +151,14 @@ public class CustomLinkedList<T> {
                 this.size--;
                 return;
             }
-            Node<T> temp = this.head;
+            INode<T> temp = this.head;
             this.head = this.head.getNext();
             temp.setNext(null);
             this.size--;
             return;
         }
-        Node<T> temp = this.head;
-        Node<T> prevTail = null;
+        INode<T> temp = this.head;
+        INode<T> prevTail = null;
         int count = 0;
         while(temp != null && count < atIndex) {
             prevTail = temp;
@@ -178,10 +179,10 @@ public class CustomLinkedList<T> {
         }
     }
 
-    private String convToString(Node<T> head) {
+    private String convToString(INode<T> head) {
         if(head.getNext() == null)
-            return head.getValue().toString();
-        return head.getValue().toString() + ", " + convToString(head.getNext());
+            return head.getKey().toString();
+        return head.getKey().toString() + ", " + convToString(head.getNext());
     }
 
     @Override
@@ -191,13 +192,13 @@ public class CustomLinkedList<T> {
         return "[" + convToString(this.head) + "]";
     }
 
-    private static <V> Node<V> getMiddleNode(Node<V> head){
+    private static <V> INode<V> getMiddleNode(INode<V> head){
         if(head == null)
             return null;
         if(head.getNext() == null)
             return head;
-        Node<V> fastNode = head.getNext();
-        Node<V> slowNode = head;
+        INode<V> fastNode = head.getNext();
+        INode<V> slowNode = head;
         while(fastNode != null && fastNode.getNext() != null) {
             slowNode = slowNode.getNext();
             fastNode = fastNode.getNext().getNext();
@@ -213,40 +214,39 @@ public class CustomLinkedList<T> {
         }
     }
 
-    public static <V> CustomLinkedList<V> mergeSort(Node<V> head, Node<V> tail, Comparator<? super V> c){
+    public static <V> CustomLinkedList<V> mergeSort(INode<V> head, INode<V> tail, Comparator<? super V> c){
         if(head == null)
             return null;
         if(head.getNext() == null)
-            return new CustomLinkedList<V>(head.getValue());
-        Node<V> midNode = getMiddleNode(head);
-        Node<V> head2 = midNode.getNext();
+            return new CustomLinkedList<V>(head.getKey());
+        INode<V> midNode = getMiddleNode(head);
+        INode<V> head2 = midNode.getNext();
         midNode.setNext(null);
         CustomLinkedList<V> list1 = mergeSort(head, midNode, c);
         CustomLinkedList<V> list2 = mergeSort(head2, tail, c);
         CustomLinkedList<V> newList = new CustomLinkedList<>();
-        Node<V> newHead1 = (list1 != null) ? list1.head : null;
-        Node<V> newHead2 = (list2 != null) ? list2.head : null;
+        INode<V> newHead1 = (list1 != null) ? list1.head : null;
+        INode<V> newHead2 = (list2 != null) ? list2.head : null;
 
         while(newHead1 != null && newHead2 != null) {
-            if(c.compare(newHead1.getValue(), newHead2.getValue()) > 0) {
-                newList.append(newHead2.getValue());
+            if(c.compare(newHead1.getKey(), newHead2.getKey()) > 0) {
+                newList.append(newHead2.getKey());
                 newHead2 = newHead2.getNext();
             }
             else {
-                newList.append(newHead1.getValue());
+                newList.append(newHead1.getKey());
                 newHead1 = newHead1.getNext();
             }
         }
         while(newHead1 != null) {
-            newList.append(newHead1.getValue());
+            newList.append(newHead1.getKey());
             newHead1 = newHead1.getNext();
         }
         while(newHead2 != null) {
-            newList.append(newHead2.getValue());
+            newList.append(newHead2.getKey());
             newHead2 = newHead2.getNext();
         }
         return newList;
-
     }
 
     public static <V> void sort(CustomLinkedList<V> list, Comparator<? super V> c) {
@@ -257,11 +257,11 @@ public class CustomLinkedList<T> {
         }
     }
 
-    public Node<T> getHead(){
+    protected INode<T> getHead(){
         return this.head;
     }
 
-    public Node<T> getTail(){
+    protected INode<T> getTail(){
         return this.tail;
     }
 

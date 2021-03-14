@@ -12,7 +12,7 @@ public class CustomQueue<T> {
     }
 
     public T peek(){
-        return list.getHead().getValue();
+        return list.getHead().getKey();
     }
 
     public void dequeue() {

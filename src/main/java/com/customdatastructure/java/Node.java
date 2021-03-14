@@ -1,26 +1,31 @@
 package com.customdatastructure.java;
 
-public class Node<T> {
-    private T value;
-    private Node<T> next;
-    public Node(T value){
-        this.value = value;
+public class Node<K> implements INode<K> {
+    private K key;
+    private Node<K> next;
+    public Node(K value){
+        this.key = value;
         this.next = null;
     }
 
-    public T getValue() {
-        return value;
+    @Override
+    public K getKey() {
+        return key;
     }
 
-    public Node<T> getNext() {
+    @Override
+    public Node<K> getNext() {
         return next;
     }
 
-    public void setValue(T value) {
-        this.value = value;
+    @Override
+    public void setKey(K key) {
+        this.key = key;
     }
 
-    public void setNext(Node<T> next) {
-        this.next = next;
+    @Override
+    public void setNext(INode next) {
+        this.next = (Node<K>) next;
     }
+
 }

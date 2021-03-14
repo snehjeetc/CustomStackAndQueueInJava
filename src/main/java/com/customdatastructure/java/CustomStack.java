@@ -15,7 +15,7 @@ public class CustomStack<T> {
         if(isEmpty())
             throw new CustomLinkedListExceptions(CustomLinkedListExceptions.LinkedListExceptionType.LIST_EMPTY,
                     "Stack Empty");
-        return list.getHead().getValue();
+        return list.getHead().getKey();
     }
 
     public void pop(){
